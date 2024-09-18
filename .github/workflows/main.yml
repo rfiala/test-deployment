@@ -1,0 +1,44 @@
+name: Zip and Upload to S3
+
+on:
+  push:
+    branches:
+      - main  # Change this to the branch you want to trigger the workflow
+
+jobs:
+  zip-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code from the repo
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Generate a unique version tag
+      - name: Generate version tag
+        id: version_tag
+        run: |
+          # Get the short commit hash
+          COMMIT_HASH=$(git rev-parse --short HEAD)
+          # Use GitHub Actions run number as part of the version
+          VERSION_TAG="v1.${{ github.run_number }}-${COMMIT_HASH}"
+          echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_ENV
+          echo "Generated version tag: $VERSION_TAG"
+
+      # Step 3: Compress folder with tar (excluding .git and node_modules)
+      - name: Compress folder with tar
+        run: |
+          tar --exclude='.git' --exclude='node_modules' -czvf repo_archive_${{ env.VERSION_TAG }}.tar.gz .
+
+      # Step 4: Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Change to your S3 bucket region
+
+      # Step 5: Upload to S3
+      - name: Upload to S3
+        run: |
+          aws s3 cp repo_archive_${{ env.VERSION_TAG }}.tar.gz s3://up-webapp-deployment-history/repo_archive_${{ env.VERSION_TAG }}.tar.gz
