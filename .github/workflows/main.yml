@@ -25,12 +25,18 @@ jobs:
           echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_ENV
           echo "Generated version tag: $VERSION_TAG"
 
-      # Step 3: Compress folder with tar (excluding .git and node_modules)
+      # Step 3: Create a temporary directory and copy files
+      - name: Create temporary directory and sync files
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/temp_dir
+          rsync -a --exclude='.git' --exclude='node_modules' $GITHUB_WORKSPACE/ $GITHUB_WORKSPACE/temp_dir/
+
+      # Step 4: Compress the copied directory with tar
       - name: Compress folder with tar
         run: |
-          tar --exclude='.git' --exclude='node_modules' --ignore-failed-read -czvf repo_archive_${{ env.VERSION_TAG }}.tar.gz .
+          tar -czvf repo_archive_${{ env.VERSION_TAG }}.tar.gz -C $GITHUB_WORKSPACE/temp_dir .
 
-      # Step 4: Configure AWS credentials
+      # Step 5: Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -38,7 +44,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1  # Change to your S3 bucket region
 
-      # Step 5: Upload to S3
+      # Step 6: Upload to S3
       - name: Upload to S3
         run: |
-          aws s3 cp repo_archive_${{ env.VERSION_TAG }}.tar.gz s3://up-webapp-deployment-history/repo_archive_${{ env.VERSION_TAG }}.tar.gz
+          aws s3 cp repo_archive_${{ env.VERSION_TAG }}.tar.gz s3://your-s3-bucket-name/path/to/upload/repo_archive_${{ env.VERSION_TAG }}.tar.gz
