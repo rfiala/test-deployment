@@ -28,7 +28,7 @@ jobs:
       # Step 3: Compress folder with tar (excluding .git and node_modules)
       - name: Compress folder with tar
         run: |
-          tar --exclude='.git' --exclude='node_modules' -czvf repo_archive_${{ env.VERSION_TAG }}.tar.gz .
+          tar --exclude='.git' --exclude='node_modules' --ignore-failed-read -czvf repo_archive_${{ env.VERSION_TAG }}.tar.gz .
 
       # Step 4: Configure AWS credentials
       - name: Configure AWS credentials
