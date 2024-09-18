@@ -47,4 +47,4 @@ jobs:
       # Step 6: Upload to S3
       - name: Upload to S3
         run: |
-          aws s3 cp repo_archive_${{ env.VERSION_TAG }}.tar.gz s3://your-s3-bucket-name/path/to/upload/repo_archive_${{ env.VERSION_TAG }}.tar.gz
+          aws s3 cp repo_archive_${{ env.VERSION_TAG }}.tar.gz s3://ug-webapp-deployment-history/repo_archive_${{ env.VERSION_TAG }}.tar.gz
