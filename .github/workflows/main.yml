@@ -30,7 +30,7 @@ jobs:
         working-directory: ./
         shell: bash
         run: |
-          scp -r ./frontend/.output/public ./backend/public
+          scp -r ./frontend/.output/public/* ./backend/public
           rm -r ./frontend/
 
       # Step 3: Create a temporary directory and copy files
