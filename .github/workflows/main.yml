@@ -25,11 +25,19 @@ jobs:
           echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_ENV
           echo "Generated version tag: $VERSION_TAG"
 
+      # clean up the build directory to only zip whats actually needed
+      - name: Configure frontend build
+        working-directory: ./
+        shell: bash
+        run: |
+          scp -r ./frontend/.output/public ./backend/public
+          rm -r ./frontend/
+
       # Step 3: Create a temporary directory and copy files
       - name: Create temporary directory and sync files
         run: |
           mkdir -p $GITHUB_WORKSPACE/temp_dir
-          rsync -a --exclude='.git' --exclude='node_modules' $GITHUB_WORKSPACE/ $GITHUB_WORKSPACE/temp_dir/
+          rsync -a --exclude='.git' --exclude='.github' --exclude='mysql' --exclude='nginx' --exclude='node_modules' $GITHUB_WORKSPACE/ $GITHUB_WORKSPACE/temp_dir/
 
       # Step 4: Compress the copied directory with tar
       - name: Compress folder with tar
