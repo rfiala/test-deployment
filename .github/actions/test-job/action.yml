@@ -1,5 +1,9 @@
 name: Test Job
 
+outputs:
+  test:
+    value: ${{ steps.set.outputs.test }}
+
 runs:
   using: 'composite'
 
