@@ -1,5 +1,8 @@
 name: Test Job
 
+outputs:
+  test_url: ${{ steps.set_archive_url.outputs.test }}
+
 runs:
   using: 'composite'
 
@@ -12,4 +15,4 @@ runs:
       id: set_archive_url
       shell: bash
       run: |
-        echo "TEST_URL=test" >> "$GITHUB_OUTPUT"
+        echo "test=test" >> "$GITHUB_OUTPUT"
