@@ -15,4 +15,5 @@ runs:
       id: set_archive_url
       shell: bash
       run: |
-        echo "test=test" >> "$GITHUB_OUTPUT"
+        echo "test=a url to save" >> $GITHUB_OUTPUT
+        echo "$test"
