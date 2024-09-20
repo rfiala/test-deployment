@@ -1,9 +1,5 @@
 name: Test Job
 
-outputs:
-  test_url:
-    value: ${{ steps.set.outputs.test }}
-
 runs:
   using: 'composite'
 
