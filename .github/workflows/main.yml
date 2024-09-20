@@ -14,6 +14,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set variable
+        uses: ./.github/actions/test-job
+
+      # Step 0: echo
+      - name: echo
+        run: echo ${{ needs.test-job.outputs.TEST_URL }}
+
       # Step 2: Generate a unique version tag
       - name: Generate version tag
         id: version_tag
@@ -25,24 +32,11 @@ jobs:
           echo "VERSION_TAG=$VERSION_TAG" >> $GITHUB_ENV
           echo "Generated version tag: $VERSION_TAG"
 
-      # clean up the build directory to only zip whats actually needed
-      - name: Configure frontend build
-        working-directory: ./
-        shell: bash
-        run: |
-          scp -r ./frontend/.output/public/* ./backend/public
-          rm -r ./frontend/
-
-      # Step 3: Create a temporary directory and copy files
-      - name: Create temporary directory and sync files
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/temp_dir
-          rsync -a --exclude='.git' --exclude='.github' --exclude='mysql' --exclude='nginx' --exclude='node_modules' $GITHUB_WORKSPACE/ $GITHUB_WORKSPACE/temp_dir/
-
       # Step 4: Compress the copied directory with tar
       - name: Compress folder with tar
         run: |
-          tar -czvf repo_archive_${{ env.VERSION_TAG }}.tar.gz -C $GITHUB_WORKSPACE/temp_dir .
+          mkdir -p $GITHUB_WORKSPACE/temp_dir
+          tar -czvf $GITHUB_WORKSPACE/temp_dir/repo_archive_${{ env.VERSION_TAG }}.tar.gz -C $GITHUB_WORKSPACE/temp_dir --exclude=./temp_dir . > /dev/null 
 
       # Step 5: Configure AWS credentials
       - name: Configure AWS credentials
