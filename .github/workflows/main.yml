@@ -54,4 +54,5 @@ jobs:
 
     steps:
       - name: echo send-to-s3.outputs.archive_url
+        shell: bash
         run: echo ${{ needs.zip-and-upload.outputs.archive_url }}
