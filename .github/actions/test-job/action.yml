@@ -1,7 +1,7 @@
 name: Test Job
 
 outputs:
-  test_url: ${{ steps.set_archive_url.outputs.test }}
+  test_url: ${{ steps.set.outputs.test }}
 
 runs:
   using: 'composite'
@@ -12,7 +12,7 @@ runs:
 
     # Step 3: set environment variable for workflow
     - name: Set environment variable
-      id: set_archive_url
+      id: set
       shell: bash
       run: |
         echo "test=a url to save" >> $GITHUB_OUTPUT
