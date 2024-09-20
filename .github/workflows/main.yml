@@ -22,7 +22,7 @@ jobs:
 
       # Step 0: echo
       - name: echo
-        run: echo ${{ needs.test-job.outputs.TEST_URL }}
+        run: echo ${{ needs.test-job.outputs.test_url }}
 
       # Step 2: Generate a unique version tag
       - name: Generate version tag
