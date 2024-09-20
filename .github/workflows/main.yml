@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      test_url:
-        value: ${{ steps.set_archive_url.outputs.test }}
+      test_url: ${{ steps.set_archive_url.outputs.test }}
 
     steps:
       # Step 1: Check out the code from the repo
