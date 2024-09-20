@@ -1,8 +1,5 @@
 name: Test Job
 
-outputs:
-  test_url: ${{steps.set_archive_url.outputs.TEST_URL}}
-
 runs:
   using: 'composite'
 

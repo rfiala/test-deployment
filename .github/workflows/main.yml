@@ -9,6 +9,9 @@ jobs:
   zip-and-upload:
     runs-on: ubuntu-latest
 
+    outputs:
+      test_url: ${{steps.set_archive_url.outputs.TEST_URL}}
+
     steps:
       # Step 1: Check out the code from the repo
       - name: Checkout repository
