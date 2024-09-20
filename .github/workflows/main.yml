@@ -36,7 +36,9 @@ jobs:
       - name: Compress folder with tar
         run: |
           mkdir -p $GITHUB_WORKSPACE/temp_dir
-          tar -czvf $GITHUB_WORKSPACE/temp_dir/repo_archive_${{ env.VERSION_TAG }}.tar.gz -C $GITHUB_WORKSPACE --exclude=./temp_dir . > /dev/null 
+          tar -czvf $GITHUB_WORKSPACE/temp_dir/repo_archive_${{ env.VERSION_TAG }}.tar.gz -C $GITHUB_WORKSPACE \
+            --exclude="./temp_dir" \
+            . > /dev/null 
 
       # Step 5: Configure AWS credentials
       - name: Configure AWS credentials
