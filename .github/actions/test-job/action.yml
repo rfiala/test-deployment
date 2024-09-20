@@ -12,4 +12,4 @@ runs:
       id: set_archive_url
       shell: bash
       run: |
-        echo "TEST_URL=s3://test/test.tar.gz" >> $GITHUB_OUTPUT
+        echo "TEST_URL=s3://test/test.tar.gz" >> "$GITHUB_OUTPUT"
