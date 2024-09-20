@@ -18,10 +18,6 @@ jobs:
         id: set_archive_url
         uses: ./.github/actions/test-job
 
-      # Step 0: echo
-      - name: echo
-        run: echo ${{ steps.set_archive_url.outputs.test_url }}
-
       # Step 2: Generate a unique version tag
       - name: Generate version tag
         id: version_tag
@@ -37,7 +33,7 @@ jobs:
       - name: Compress folder with tar
         run: |
           mkdir -p $GITHUB_WORKSPACE/temp_dir
-          tar -czvf $GITHUB_WORKSPACE/temp_dir/repo_archive_${{ env.VERSION_TAG }}.tar.gz -C $GITHUB_WORKSPACE/temp_dir --exclude=./temp_dir . > /dev/null 
+          tar -czvf $GITHUB_WORKSPACE/temp_dir/repo_archive_${{ env.VERSION_TAG }}.tar.gz -C $GITHUB_WORKSPACE --exclude=./temp_dir . > /dev/null 
 
       # Step 5: Configure AWS credentials
       - name: Configure AWS credentials
@@ -51,3 +47,11 @@ jobs:
       - name: Upload to S3
         run: |
           aws s3 cp repo_archive_${{ env.VERSION_TAG }}.tar.gz s3://ug-webapp-deployment-history/repo_archive_${{ env.VERSION_TAG }}.tar.gz
+
+  echo-var:
+    runs-on: ubuntu-latest
+    needs: [zip-and-upload]
+
+    steps:
+      - name: echo send-to-s3.outputs.archive_url
+        run: echo ${{ needs.zip-and-upload.outputs.archive_url }}
