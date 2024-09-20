@@ -46,7 +46,7 @@ jobs:
       # Step 6: Upload to S3
       - name: Upload to S3
         run: |
-          aws s3 cp repo_archive_${{ env.VERSION_TAG }}.tar.gz s3://ug-webapp-deployment-history/repo_archive_${{ env.VERSION_TAG }}.tar.gz
+          aws s3 cp $GITHUB_WORKSPACE/temp_dir/repo_archive_${{ env.VERSION_TAG }}.tar.gz s3://ug-webapp-deployment-history/repo_archive_${{ env.VERSION_TAG }}.tar.gz
 
   echo-var:
     runs-on: ubuntu-latest
