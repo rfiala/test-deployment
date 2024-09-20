@@ -2,6 +2,10 @@ name: Test Job
 
 runs:
   using: 'composite'
+
+  outputs:
+    test_url: ${{steps.set_archive_url.outputs.TEST_URL}}
+
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -12,6 +16,3 @@ runs:
       shell: bash
       run: |
         echo "TEST_URL=s3://test/test.tar.gz" >> $GITHUB_OUTPUT
-
-  outputs:
-    test_url: ${{steps.set_archive_url.outputs.TEST_URL}}
