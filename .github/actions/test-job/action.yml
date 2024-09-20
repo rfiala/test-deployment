@@ -12,3 +12,6 @@ runs:
       shell: bash
       run: |
         echo "TEST_URL=s3://test/test.tar.gz" >> $GITHUB_OUTPUT
+
+  outputs:
+    test_url: ${{steps.set_archive_url.outputs.TEST_URL}}
