@@ -17,4 +17,3 @@ runs:
       shell: bash
       run: |
         echo "test=a url to save" >> $GITHUB_OUTPUT
-        echo "$test"
