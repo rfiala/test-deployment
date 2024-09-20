@@ -60,4 +60,4 @@ jobs:
     steps:
       - name: echo send-to-s3.outputs.test_url
         shell: bash
-        run: echo ${{ needs.zip-and-upload.outputs.TEST_URL }}
+        run: echo ${{ needs.zip-and-upload.set_archive_url.outputs.TEST_URL }}
